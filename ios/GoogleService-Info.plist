@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>63990876313-fq2805juh21l5bbkipk7ft2o0spfgpkj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.63990876313-fq2805juh21l5bbkipk7ft2o0spfgpkj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBqobAQlfX7eJ3W6ItLT37jlfk7q_FKxQM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>63990876313</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.SaikawaLab</string>
+	<key>PROJECT_ID</key>
+	<string>saikawalab-427516</string>
+	<key>STORAGE_BUCKET</key>
+	<string>saikawalab-427516.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:63990876313:ios:eac990a2d66ed19d1fd008</string>
+</dict>
+</plist>
