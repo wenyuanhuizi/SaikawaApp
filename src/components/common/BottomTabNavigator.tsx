@@ -5,6 +5,7 @@ import PostPage from '../../pages/PostPage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {isTablet, moderateScale} from '../../utils/responsive';
 
 export type BottomTabParamList = {
   Home: undefined;
@@ -44,12 +45,12 @@ const BottomTabNavigator = () => {
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
           position: 'absolute',
-          bottom: 20,
-          left: 20,
-          right: 20,
+          bottom: isTablet ? 30 : 20,
+          left: isTablet ? 60 : 20,
+          right: isTablet ? 60 : 20,
           backgroundColor: '#ffffff',
           borderRadius: 25,
-          height: 70,
+          height: isTablet ? 80 : 70,
           paddingBottom: 5,
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 10},
@@ -60,9 +61,9 @@ const BottomTabNavigator = () => {
           marginTop: -15,
         },
         tabBarLabelStyle: {
-          fontSize: 12,
-          position: 'absolute', // Ensures label is centered with the icon
-          bottom: 10, // Vertical alignment of the label
+          fontSize: moderateScale(12),
+          position: 'absolute',
+          bottom: 10,
         },
       })}>
       <Tab.Screen
@@ -77,6 +78,7 @@ const BottomTabNavigator = () => {
       <Tab.Screen
         name="Map"
         component={MapPage}
+        options={{ unmountOnBlur: true }}
       />
       <Tab.Screen
         name="Contact"

@@ -2,6 +2,7 @@ import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {moderateScale} from '../../utils/responsive';
 
 interface DropdownProps {
   dropdownTitle?: string;
@@ -73,14 +74,14 @@ const Dropdown: React.FC<DropdownProps> = ({
 
 const styles = StyleSheet.create({
   dropdownContainer: {
-    width: 150,
+    width: moderateScale(150),
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
   dropdownButton: {
-    height: 40,
-    width: 150,
+    height: moderateScale(40),
+    width: moderateScale(150),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: moderateScale(16),
   },
 });
 

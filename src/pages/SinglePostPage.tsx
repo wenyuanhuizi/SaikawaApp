@@ -6,7 +6,6 @@ import {
   Image,
   ActivityIndicator,
   SafeAreaView,
-  Dimensions,
   ScrollView,
   TouchableOpacity,
   Modal,
@@ -18,8 +17,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {useTheme} from '@react-navigation/native';
+import {MAX_CONTENT_WIDTH, moderateScale, isTablet} from '../utils/responsive';
 
-const screenWidth = Dimensions.get('window').width;
 const CLOUD_FRONT_URL = 'https://dwtzamkwegvv2.cloudfront.net/';
 
 type SinglePostRouteProp = RouteProp<RootStackParamList, 'SinglePostPage'>;
@@ -185,30 +184,35 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   title: {
-    fontSize: 22,
+    fontSize: moderateScale(22),
     fontWeight: 'bold',
     flex: 1,
     marginLeft: 10,
   },
   date: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#666',
     marginHorizontal: 15,
     marginTop: 5,
   },
   imageContainer: {
-    height: 300,
-    width: screenWidth,
+    height: isTablet ? 420 : 300,
+    width: '100%',
+    maxWidth: MAX_CONTENT_WIDTH,
+    alignSelf: 'center',
     marginTop: 10,
   },
   image: {
-    width: screenWidth,
-    height: 300,
+    width: MAX_CONTENT_WIDTH,
+    height: isTablet ? 420 : 300,
   },
   description: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     paddingHorizontal: 15,
     paddingTop: 10,
+    maxWidth: MAX_CONTENT_WIDTH,
+    alignSelf: 'center',
+    width: '100%',
   },
   closeButton: {
     position: 'absolute',

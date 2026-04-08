@@ -7,6 +7,7 @@ import {
 import SensorsMap from '../components/maps/SensorsMap';
 import Dropdown from '../components/common/Dropdown';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {moderateScale} from '../utils/responsive';
 
 const MapPage = () => {
   // Fetch sensor locations from the database
@@ -26,13 +27,13 @@ const MapPage = () => {
     latitude: 33.755,
     longitude: -84.365,
     latitudeDelta: 0.375,
-    longitudeDelta: 0.035,
+    longitudeDelta: 0.025,
   };
   const guatemalaRegion = {
     latitude: 15.26717,
     longitude: -90.49532,
     latitudeDelta: 4,
-    longitudeDelta: 0.1,
+    longitudeDelta: 0.025,
   };
   const [region, setRegion] = useState(guatemalaRegion);
 
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     position: 'absolute',
     left: '50%',
-    transform: [{translateX: -75}],
+    transform: [{translateX: -moderateScale(75)}],
     zIndex: 999,
   },
 });

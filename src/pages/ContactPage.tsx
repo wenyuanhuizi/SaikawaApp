@@ -9,6 +9,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import TopBar from '../components/common/TopBar';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {MAX_CONTENT_WIDTH, moderateScale} from '../utils/responsive';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../NavigationManager'; 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'; 
@@ -96,16 +97,19 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 1,
-    padding: 30,
+    padding: moderateScale(30),
     paddingTop: 20,
   },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
+    padding: moderateScale(20),
     marginVertical: 10,
     borderRadius: 15,
     backgroundColor: '#fff',
+    maxWidth: MAX_CONTENT_WIDTH,
+    width: '100%',
+    alignSelf: 'center',
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 5},
     shadowOpacity: 0.1,
@@ -128,13 +132,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: '600',
     color: '#000',
     marginBottom: 5,
   },
   description: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#555',
   },
 });

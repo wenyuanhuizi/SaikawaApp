@@ -12,6 +12,7 @@ import StudentsForm from '../components/forms/students_form';
 import OthersForm from '../components/forms/others_form';
 import {useTheme, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {moderateScale} from '../utils/responsive';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     marginLeft: 10,
     fontWeight: 'bold',
   },
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   tabBarLabel: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
   },
 });
 

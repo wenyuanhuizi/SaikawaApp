@@ -4,13 +4,16 @@ import {
   TextInput,
   StyleSheet,
   Alert,
-  SafeAreaView,
+  View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   ScrollView,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useTheme} from '@react-navigation/native';
 import {validateStudentContactForm} from '../../utils/inputValidationUtils';
+import {moderateScale} from '../../utils/responsive';
 import axios from 'axios';
 import {
   pick,
@@ -275,8 +278,9 @@ const StudentsForm = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View style={styles.container}>
+      <ScrollView keyboardDismissMode="interactive">
         <Text style={[styles.label, {color: colors.primary}]}>Name*</Text>
         <TextInput
           style={[
@@ -346,23 +350,29 @@ const StudentsForm = () => {
           onFocus={() => setFocusedInput('program')}
         />
 
-        <Text style={[styles.response, {color: colors.primary}]}>
-          If you chose "other" for the previous question, please list the name
-          of your program here:
-        </Text>
-        <TextInput
-          style={[
-            styles.input,
-            {
-              borderColor:
-                focusedInput === 'otherProgram' ? colors.primary : '#c4bebe',
-            },
-          ]}
-          value={otherProgram || ''}
-          onChangeText={setOtherProgram}
-          onFocus={() => setFocusedInput('otherProgram')}
-          onBlur={() => setFocusedInput(null)}
-        />
+        {program === 'Other' && (
+          <>
+            <Text style={[styles.response, {color: colors.primary}]}>
+              If you chose "other" for the previous question, please list the
+              name of your program here:
+            </Text>
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  borderColor:
+                    focusedInput === 'otherProgram'
+                      ? colors.primary
+                      : '#c4bebe',
+                },
+              ]}
+              value={otherProgram || ''}
+              onChangeText={setOtherProgram}
+              onFocus={() => setFocusedInput('otherProgram')}
+              onBlur={() => setFocusedInput(null)}
+            />
+          </>
+        )}
 
         <Text style={[styles.label, {color: colors.primary}]}>Major*</Text>
         <TextInput
@@ -425,7 +435,7 @@ const StudentsForm = () => {
             styles.input,
             {
               borderColor:
-                focusedInput === 'gradtionYear' ? colors.primary : '#c4bebe',
+                focusedInput === 'graduationYear' ? colors.primary : '#c4bebe',
             },
           ]}
           placeholder="e.g. 2026"
@@ -591,7 +601,8 @@ const StudentsForm = () => {
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -601,14 +612,14 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   label: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     marginBottom: 8,
     marginLeft: 15,
     marginTop: 5,
     fontWeight: 'bold',
   },
   response: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     marginBottom: 8,
     marginHorizontal: 15,
     fontWeight: 'bold',
@@ -644,17 +655,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    height: 50,
+    height: moderateScale(50),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     marginVertical: 10,
-    width: 250,
+    width: moderateScale(250),
     alignSelf: 'center',
   },
   buttonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 'bold',
   },
   uploadButton: {

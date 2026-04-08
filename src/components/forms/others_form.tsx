@@ -4,11 +4,14 @@ import {
   TextInput,
   StyleSheet,
   Alert,
-  SafeAreaView,
+  View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   ScrollView,
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import {moderateScale} from '../../utils/responsive';
 
 const OthersForm = () => {
   const {colors} = useTheme();
@@ -25,6 +28,19 @@ const OthersForm = () => {
   }
 
   const handleSubmit = async () => {
+    if (!name.trim()) {
+      Alert.alert('Error', 'Name is required.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email.trim())) {
+      Alert.alert('Error', 'Please enter a valid email address.');
+      return;
+    }
+    if (!userResponse.trim()) {
+      Alert.alert('Error', 'Please enter a description.');
+      return;
+    }
     try {
       const payload: FormData = {
         name,
@@ -43,8 +59,6 @@ const OthersForm = () => {
         },
       );
 
-      const responseData = await response.json();
-
       if (response.ok) {
         Alert.alert('Success', 'Your information has been submitted!');
         setName('');
@@ -61,8 +75,9 @@ const OthersForm = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View style={styles.container}>
+      <ScrollView keyboardDismissMode="interactive">
         <Text style={[styles.introText, {color: colors.primary}]}>
           If you are looking to collaborate or volunteer with the lab don’t
           hesitate to reach out! Visit our website to learn more about the work
@@ -123,7 +138,8 @@ const OthersForm = () => {
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -134,14 +150,14 @@ const styles = StyleSheet.create({
   },
   introText: {
     marginBottom: 20,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     marginHorizontal: 10,
     marginTop: 15,
     fontWeight: 'bold',
   },
   label: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     marginBottom: 8,
     marginLeft: 15,
     marginTop: 5,
@@ -164,17 +180,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    height: 50,
+    height: moderateScale(50),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     marginVertical: 10,
-    width: 250,
+    width: moderateScale(250),
     alignSelf: 'center',
   },
   buttonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 'bold',
   },
 });

@@ -2,6 +2,7 @@ import {useTheme} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import MapView, {Marker, Callout} from 'react-native-maps';
+import {moderateScale} from '../../utils/responsive';
 
 interface IndividualSensorLocationProps {
   lat: number;
@@ -55,15 +56,15 @@ const IndividualSensorLocation: React.FC<IndividualSensorLocationProps> = ({
 const styles = StyleSheet.create({
   map: {
     width: '85%',
-    height: 125,
+    height: moderateScale(125),
     borderRadius: 12,
     marginVertical: 20,
     alignSelf: 'center',
   },
   marker: {
-    width: 25,
-    height: 25,
-    borderRadius: 25 / 2,
+    width: moderateScale(25),
+    height: moderateScale(25),
+    borderRadius: moderateScale(25) / 2,
   },
 
   calloutWrapper: {

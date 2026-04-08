@@ -15,6 +15,7 @@ import AQIVisualization from '../components/dataVisualizations/AQIVisualization'
 import IndividualSensorLocation from '../components/maps/IndividualSensorLocation';
 import {fetchLatestSensorData} from '../services/SensorDataService';
 import {SensorData} from '../services/SensorLocationService';
+import {moderateScale} from '../utils/responsive';
 
 const SensorDataPage = () => {
   const {colors} = useTheme();
@@ -131,9 +132,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   sensorTitle: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 'bold',
-    marginLeft: 40,
+    marginLeft: moderateScale(40),
   },
   aqiContainer: {
     alignItems: 'center',
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   aqiLabel: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 'bold',
   },
 });

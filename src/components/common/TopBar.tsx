@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '@react-navigation/native';
+import {moderateScale} from '../../utils/responsive';
 
 const TopBar: React.FC = () => {
   const {colors} = useTheme();
@@ -44,12 +45,12 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: moderateScale(40),
+    height: moderateScale(40),
     resizeMode: 'contain',
   },
   title: {
-    fontSize: 23,
+    fontSize: moderateScale(23),
     fontWeight: 'bold',
     position: 'absolute',
     left: 0,

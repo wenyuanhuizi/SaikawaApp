@@ -5,16 +5,19 @@ import {
   TextInput,
   StyleSheet,
   Alert,
-  SafeAreaView,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useTheme, useNavigation} from '@react-navigation/native';
 import {launchImageLibrary, Asset} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
+import {moderateScale} from '../utils/responsive';
 
 function EnvReportPage() {
   const {colors} = useTheme();
@@ -114,7 +117,20 @@ function EnvReportPage() {
   };
 
   const handleSubmit = async () => {
-    if (isSubmitting) return; // Prevent duplicate submissions
+    if (!name.trim()) {
+      Alert.alert('Error', 'Name is required.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email.trim())) {
+      Alert.alert('Error', 'Please enter a valid email address.');
+      return;
+    }
+    if (!description.trim()) {
+      Alert.alert('Error', 'Description is required.');
+      return;
+    }
+    if (isSubmitting) return;
     setIsSubmitting(true);
 
     try {
@@ -158,8 +174,9 @@ function EnvReportPage() {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView keyboardDismissMode="interactive">
         <View style={[styles.header, {borderBottomColor: '#ddd'}]}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" size={24} color={colors.primary} />
@@ -208,6 +225,7 @@ function EnvReportPage() {
             },
           ]}
           placeholder="+1 (___) ___-____"
+          keyboardType="phone-pad"
           value={phone}
           onChangeText={setPhone}
           onFocus={() => setFocusedInput('phone')}
@@ -218,7 +236,7 @@ function EnvReportPage() {
         <Dropdown
           style={[
             styles.dropdown,
-            {borderColor: focusedInput === 'year' ? colors.primary : '#c4bebe'},
+            {borderColor: focusedInput === 'category' ? colors.primary : '#c4bebe'},
           ]}
           placeholderStyle={{fontSize: 14, color: '#c4bebe'}}
           selectedTextStyle={{fontSize: 14, color: '#050000'}}
@@ -279,6 +297,7 @@ function EnvReportPage() {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -296,7 +315,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     marginLeft: 10,
     fontWeight: 'bold',
   },
@@ -308,7 +327,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   label: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     marginBottom: 8,
     marginLeft: 15,
     marginTop: 5,
@@ -339,17 +358,17 @@ const styles = StyleSheet.create({
     height: 150,
   },
   button: {
-    height: 50,
+    height: moderateScale(50),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     marginVertical: 10,
-    width: 250,
+    width: moderateScale(250),
     alignSelf: 'center',
   },
   buttonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 'bold',
   },
   imageContainer: {

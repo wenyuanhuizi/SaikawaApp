@@ -38,15 +38,9 @@ export const fetchSensorData = async (
       },
     });
 
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch sensor data (${response.status}). Please adjust the date range and try again.`,
-      );
-    }
-
-    let json = await response.json();
+    let json = response.ok ? await response.json() : null;
     if (!json || json.length === 0) {
-      throw new Error('No data available for the selected date range.');
+      throw new Error('No data available for the selected date range. Please try a different range.');
     }
 
     console.log('Data length:', json.length);
@@ -72,7 +66,7 @@ export const fetchSensorData = async (
       (a, b) => a.x.getTime() - b.x.getTime(),
     );
 
-    console.log('Filtered data:', filtered);
+    console.log('Filtered data:', filtered.length);
 
     // Aggregate the data points if necessary.
     const aggregated =
@@ -80,7 +74,7 @@ export const fetchSensorData = async (
         ? aggregateDataPoints(filtered, maxDataPoints)
         : filtered;
 
-    console.log('Aggregated data:', aggregated);
+    console.log('Aggregated data:', aggregated.length);
 
     return aggregated;
   } catch (error) {
@@ -123,17 +117,13 @@ const aggregateDataPoints = (
 
 
 const removeDuplicates = (data: {x: Date; y: number}[]) => {
-  let dates: string[] = [];
-  let filtered: {x: Date; y: number}[] = [];
-
-  for (let i = 0; i < data.length; i++) {
-    if (!dates.includes(data[i].x.toISOString())) {
-      dates.push(data[i].x.toISOString());
-      filtered.push(data[i]);
-    }
-  }
-
-  return filtered;
+  const seen = new Set<string>();
+  return data.filter(d => {
+    const iso = d.x.toISOString();
+    if (seen.has(iso)) return false;
+    seen.add(iso);
+    return true;
+  });
 };
 
 const formatDateForQuery = (date: Date): string => {

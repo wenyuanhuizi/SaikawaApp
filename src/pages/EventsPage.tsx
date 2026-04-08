@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, TextInput, ScrollView} from 'react-native';
+import {StyleSheet, View, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import axios from 'axios';
 import {useTheme} from '@react-navigation/native';
@@ -54,7 +54,7 @@ const EventsPage: React.FC = () => {
       const response = await axios.get(
         'https://api1-dot-saikawalab-427516.uc.r.appspot.com/api/v1/calendar/events',
       );
-      console.log('Events fetched successfully:', response.data);
+      // console.log('Events fetched successfully:', response.data);
 
       // format the  events data
       // make sure times are shown in the user's local time zone

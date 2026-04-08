@@ -7,14 +7,11 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Modal,
-  Dimensions,
   ActivityIndicator,
   FlatList,
   RefreshControl,
   Linking,
   Share,
-  AppState,
-  AppStateStatus,
 } from 'react-native';
 import TopBar from '../components/common/TopBar';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
@@ -26,8 +23,8 @@ import {
   NavigationProp,
 } from '@react-navigation/native';
 import {RootStackParamList} from '../NavigationManager';
+import {MAX_CONTENT_WIDTH, moderateScale, isTablet} from '../utils/responsive';
 
-const screenWidth = Dimensions.get('window').width;
 const CLOUD_FRONT_URL = 'https://dwtzamkwegvv2.cloudfront.net/';
 
 type Post = {
@@ -51,9 +48,6 @@ function PostPage() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [appState, setAppState] = useState<AppStateStatus>(
-    AppState.currentState,
-  );
   const [initialDeepLinkHandled, setInitialDeepLinkHandled] = useState(false);
 
   const handleDeepLink = (url: string | null) => {
@@ -92,38 +86,20 @@ function PostPage() {
     }
 
     // Listener for new deep link events
-    Linking.addEventListener('url', event => {
-      console.log('Received deep link:', event.url);
+    const urlSubscription = Linking.addEventListener('url', event => {
       handleDeepLink(event.url);
     });
 
-    // Listener for app state changes
-    // const appStateListener = AppState.addEventListener(
-    //   'change',
-    //   nextAppState => {
-    //     if (
-    //       appState.match(/inactive|background/) &&
-    //       nextAppState === 'active'
-    //     ) {
-    //       // When app moves to foreground, check for any pending deep links
-    //       Linking.getInitialURL().then(url => {
-    //         if (url) handleDeepLink(url);
-    //       });
-    //     }
-    //     setAppState(nextAppState);
-    //   },
-    // );
-
     return () => {
-      // subscription.remove();
-      Linking.removeAllListeners('url');
-      // appStateListener.remove();
+      urlSubscription.remove();
     };
   }, [initialDeepLinkHandled]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await fetchPosts(1, true); // Pass `prepend = true` to add new posts to the top
+    setHasMore(true);
+    setPage(1);
+    await fetchPosts(1, true);
     setRefreshing(false);
   };
 
@@ -141,7 +117,6 @@ function PostPage() {
       }
 
       const data = await response.json();
-      console.log('Fetched data:', data);
 
       if (Array.isArray(data) && data.length > 0) {
         setPosts(prevPosts => {
@@ -239,8 +214,6 @@ function PostPage() {
       <View style={styles.imageContainer}>
         {Array.isArray(item.imageKeys) && item.imageKeys.length > 0 ? (
           <SwiperFlatList
-            index={Math.min(currentIndex, item.imageKeys.length - 1)}
-            onChangeIndex={({index}) => setCurrentIndex(index)}
             showPagination
             paginationDefaultColor="gray"
             paginationActiveColor={colors.primary}
@@ -334,6 +307,9 @@ const styles = StyleSheet.create({
   postCard: {
     overflow: 'hidden',
     marginBottom: 10,
+    maxWidth: MAX_CONTENT_WIDTH,
+    width: '100%',
+    alignSelf: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -343,28 +319,28 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'DMSans-Bold',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     paddingVertical: 2.5,
   },
   imageContainer: {
-    height: 300,
-    width: screenWidth,
+    height: isTablet ? 420 : 300,
+    width: '100%',
   },
   image: {
-    width: screenWidth,
-    height: 300,
+    width: MAX_CONTENT_WIDTH,
+    height: isTablet ? 420 : 300,
   },
   descriptionContainer: {
     marginHorizontal: 15,
     marginTop: 10,
   },
   description: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
   },
   date: {
     marginHorizontal: 15,
     marginTop: 5,
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: '#666',
     textAlign: 'left',
   },

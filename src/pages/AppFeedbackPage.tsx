@@ -5,12 +5,15 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
-  SafeAreaView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   View,
+  SafeAreaView,
 } from 'react-native';
 import {useTheme, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {moderateScale} from '../utils/responsive';
 
 function AppFeedbackPage() {
   const {colors} = useTheme();
@@ -29,6 +32,19 @@ function AppFeedbackPage() {
   }
 
   const handleSubmit = async () => {
+    if (!name.trim()) {
+      Alert.alert('Error', 'Name is required.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email.trim())) {
+      Alert.alert('Error', 'Please enter a valid email address.');
+      return;
+    }
+    if (!bugReport.trim() && !experience.trim()) {
+      Alert.alert('Error', 'Please fill in at least one field.');
+      return;
+    }
     try {
       const payload: BugReportData = {
         name,
@@ -48,8 +64,6 @@ function AppFeedbackPage() {
         },
       );
 
-      const responseData = await response.json();
-
       if (response.ok) {
         Alert.alert('Success', 'Your bug has been reported!');
         setName('');
@@ -67,6 +81,7 @@ function AppFeedbackPage() {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <SafeAreaView style={styles.container}>
       <View style={[styles.header, {borderBottomColor: '#ddd'}]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -77,7 +92,7 @@ function AppFeedbackPage() {
         </Text>
       </View>
 
-      <ScrollView>
+      <ScrollView keyboardDismissMode="interactive">
         <Text style={[styles.label, {color: colors.primary}]}>Name</Text>
         <TextInput
           style={[
@@ -138,7 +153,7 @@ function AppFeedbackPage() {
                 focusedInput === 'experience' ? colors.primary : '#c4bebe',
             },
           ]}
-          placeholder="What would make your experience better, please share your thoughts or pronblems..."
+          placeholder="What would make your experience better, please share your thoughts or problems..."
           value={experience}
           onChangeText={setExperience}
           multiline
@@ -154,6 +169,7 @@ function AppFeedbackPage() {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -171,12 +187,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     marginLeft: 10,
     fontWeight: 'bold',
   },
   label: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     marginBottom: 8,
     marginLeft: 15,
     marginTop: 20,
@@ -197,32 +213,18 @@ const styles = StyleSheet.create({
     height: 150,
     borderWidth: 1,
   },
-  dropdown: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    padding: 10,
-    marginHorizontal: 10,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
   button: {
-    height: 50,
+    height: moderateScale(50),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     marginVertical: 10,
-    width: 250,
+    width: moderateScale(250),
     alignSelf: 'center',
   },
   buttonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 'bold',
   },
 });
